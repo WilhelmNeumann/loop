@@ -1,0 +1,52 @@
+# Unity generated files
+[Tt]emp/
+[Ll]ibrary/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+
+[Uu]serSettings/
+# Visual Studio / MonoDevelop generated files
+[Ee]xported[Oo]bj/
+.vscode/
+.idea/
+.vs/
+/*.suo
+/*.user
+/*.userprefs
+/*.sln
+/*.tmp
+/*.pidb
+/*.pidb.meta
+*.booproj
+*.csproj
+*.pidb
+# Exclude Unity .meta files
+
+# User-specific files
+*.suo
+*.user
+*.userprefs
+
+# macOS .DS_Store files
+.DS_Store
+
+# Windows thumbnail files
+Thumbs.db
+
+# Windows folder configuration files
+Desktop.ini
+
+# Unity3D generated meta files
+*.pidb.meta
+
+# Unity3D Generated File On Crash Reports
+sysinfo.txt
+
+# Builds
+*.apk
+*.unitypackage
+fmod_editor.log
+
+FMOD project/.cache

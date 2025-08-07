@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 21ade14388415244394c6ed38fd4611d
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 183370
+  packageName: Feel
+  packageVersion: 5.6.1
+  assetPath: Assets/Feel/FeelDemos/SquashAndStretch/FeelSquashAndStretch.unity
+  uploadId: 768913
