@@ -1,4 +1,5 @@
 using Unity.Cinemachine;
+using UnityEngine;
 
 namespace Camera
 {
@@ -7,16 +8,23 @@ namespace Camera
         public CinemachineCamera freeCam;
         public CinemachineCamera raceCam;
 
-        public void ActivateFreeCam(bool isActive)
+        public void ActivateFreeCam(Transform target = null)
         {
-            raceCam.gameObject.SetActive(!isActive);
-            freeCam.gameObject.SetActive(isActive);
+            raceCam.gameObject.SetActive(false);
+            freeCam.gameObject.SetActive(true);
+            freeCam.GetComponent<FreeCamController>().ShowTarget(target);
         }
 
-        public void ActivateRaceCam(bool isActive)
+        public void ActivateRaceCam()
         {
-            freeCam.gameObject.SetActive(!isActive);
-            raceCam.gameObject.SetActive(isActive);
+            freeCam.gameObject.SetActive(false);
+            raceCam.gameObject.SetActive(true);
+        }
+
+        public void DeactivateAll()
+        {
+            freeCam.gameObject.SetActive(false);
+            raceCam.gameObject.SetActive(false);
         }
     }
 }

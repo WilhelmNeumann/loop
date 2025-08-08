@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 [ExecuteInEditMode]
 public class ProceduralTrackGenerator : Singleton<ProceduralTrackGenerator>
 {
-    [SerializeField] private Transform _start;
+    [SerializeField] public Transform _start;
     [SerializeField] private bool _showGizmos = true;
 
     [Header("Track Settings")] public int controlPointsCount = 12;
@@ -37,7 +36,7 @@ public class ProceduralTrackGenerator : Singleton<ProceduralTrackGenerator>
     
     
     [ContextMenu("Generate Track")]
-    public Vector3 GenerateTrack()
+    public GameObject GenerateTrack()
     {
         GenerateControlPoints();
         GenerateSplinePoints();
@@ -45,19 +44,19 @@ public class ProceduralTrackGenerator : Singleton<ProceduralTrackGenerator>
         if (_start != null)
             _start.position = transform.position + controlPoints.First();
 
-        return _start.position;
+        return _start.gameObject;
     }
 
     private void GenerateControlPoints()
     {
         controlPoints.Clear();
-        float angleStep = 2 * Mathf.PI / controlPointsCount;
+        var angleStep = 2 * Mathf.PI / controlPointsCount;
 
-        for (int i = 0; i < controlPointsCount; i++)
+        for (var i = 0; i < controlPointsCount; i++)
         {
-            float angle = i * angleStep;
-            Vector3 basePoint = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * radius;
-            Vector3 radialOffset = basePoint.normalized * Random.Range(-noiseStrength, noiseStrength);
+            var angle = i * angleStep;
+            var basePoint = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * radius;
+            var radialOffset = basePoint.normalized * Random.Range(-noiseStrength, noiseStrength);
             controlPoints.Add(basePoint + radialOffset);
         }
     }
@@ -65,18 +64,18 @@ public class ProceduralTrackGenerator : Singleton<ProceduralTrackGenerator>
     private void GenerateSplinePoints()
     {
         splinePoints.Clear();
-        int count = controlPoints.Count;
+        var count = controlPoints.Count;
 
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
         {
-            Vector3 p0 = controlPoints[(i - 1 + count) % count];
-            Vector3 p1 = controlPoints[i];
-            Vector3 p2 = controlPoints[(i + 1) % count];
-            Vector3 p3 = controlPoints[(i + 2) % count];
+            var p0 = controlPoints[(i - 1 + count) % count];
+            var p1 = controlPoints[i];
+            var p2 = controlPoints[(i + 1) % count];
+            var p3 = controlPoints[(i + 2) % count];
 
-            for (int j = 0; j < segmentsPerCurve; j++)
+            for (var j = 0; j < segmentsPerCurve; j++)
             {
-                float t = j / (float)segmentsPerCurve;
+                var t = j / (float)segmentsPerCurve;
                 splinePoints.Add(CatmullRom(p0, p1, p2, p3, t));
             }
         }
@@ -105,9 +104,9 @@ public class ProceduralTrackGenerator : Singleton<ProceduralTrackGenerator>
         List<Vector3> rightVerts = new();
         List<int> rightTris = new();
 
-        int count = splinePoints.Count;
+        var count = splinePoints.Count;
 
-        for (int i = 0; i < count; i++)
+        for (var i = 0; i < count; i++)
         {
             var curr = splinePoints[i % count];
             var next = splinePoints[(i + 1) % count];
@@ -132,10 +131,10 @@ public class ProceduralTrackGenerator : Singleton<ProceduralTrackGenerator>
             }
 
             // Fence geometry (full box)
-            Vector3 up = Vector3.up * fenceHeight;
+            var up = Vector3.up * fenceHeight;
 
             // LEFT FENCE
-            int lBase = leftVerts.Count;
+            var lBase = leftVerts.Count;
             var liBot = leftPoint;
             var liTop = liBot + up;
             var loBot = liBot - right * fenceThickness;
@@ -168,7 +167,10 @@ public class ProceduralTrackGenerator : Singleton<ProceduralTrackGenerator>
         trackMeshFilter.sharedMesh = BuildMesh(trackVerts, trackTris);
         leftFenceMeshFilter.sharedMesh = BuildMesh(leftVerts, leftTris);
         rightFenceMeshFilter.sharedMesh = BuildMesh(rightVerts, rightTris);
-        
+
+        var tag = "Fence";
+        leftFenceMeshFilter.gameObject.tag = tag;
+        rightFenceMeshFilter.gameObject.tag = tag;
         AssignFenceColliders();
     }
 
@@ -259,7 +261,14 @@ public class ProceduralTrackGenerator : Singleton<ProceduralTrackGenerator>
             collider = meshFilter.gameObject.AddComponent<MeshCollider>();
 
         collider.sharedMesh = meshFilter.sharedMesh;
-        Debug.Log($"{meshFilter.name} collider assigned with mesh: {meshFilter.sharedMesh?.name}, vertices: {meshFilter.sharedMesh?.vertexCount}");
         collider.convex = false; // Only set to true if needed for Rigidbody interaction
+    }
+    
+    public List<Vector3> GetSplinePointsWorld()
+    {
+        // if your splinePoints are local:
+        var list = new List<Vector3>(splinePoints.Count);
+        list.AddRange(splinePoints.Select(t => transform.TransformPoint(t)));
+        return list;
     }
 }

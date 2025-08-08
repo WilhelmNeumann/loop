@@ -150,5 +150,6 @@ Material:
     - _RimColor: {r: 0, g: 0.7342432, b: 1, a: 1}
     - _ShadowColor: {r: 0.8509804, g: 0.27450982, b: 0, a: 1}
     - _SpecularColor: {r: 2, g: 2, b: 2, a: 1}
-    - _Tint: {r: 0.8207547, g: 0.1440676, b: 0.13550194, a: 1}
+    - _Tint: {r: 0.22473836, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

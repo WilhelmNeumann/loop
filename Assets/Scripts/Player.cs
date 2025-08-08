@@ -1,4 +1,5 @@
 using System;
+using Feel.FeelDemos.SquashAndStretch.Scripts;
 using UnityEngine;
 
 [Serializable]
@@ -8,7 +9,7 @@ public class Player
     public string Name { get; set; }
     public Color Color { get; set; }
 
-    public GameObject Car { get; set; }
+    public CarController Car { get; set; }
 
     public Player(string name, Color color, int id)
     {

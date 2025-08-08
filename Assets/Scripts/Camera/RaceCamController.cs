@@ -30,7 +30,7 @@ namespace Camera
 
         private void OnEnable()
         {
-            var cars = GameObject.FindObjectsByType<FeelSquashAndStretchCarController>(FindObjectsInactive.Exclude,
+            var cars = FindObjectsByType<CarController>(FindObjectsInactive.Exclude,
                 FindObjectsSortMode.None);
             if (cars.Length == 0)
             {
