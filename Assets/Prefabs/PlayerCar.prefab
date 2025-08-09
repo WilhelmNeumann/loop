@@ -10755,7 +10755,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 6
-  RotationSpeed: 350
+  RotationSpeed: 250
   Trails:
   - {fileID: 234978268805776776}
   - {fileID: 4095529003374585360}

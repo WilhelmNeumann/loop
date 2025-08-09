@@ -55,7 +55,7 @@ public class GameManager : Singleton<GameManager>
             car.Initialize(player.Color, i, startAndFinish);
             player.Car = car.gameObject.GetComponent<CarController>();
             car.gameObject.SetActive(false);
-            car.CheckPoint.SetActive(false);
+            // car.CheckPoint.SetActive(false);
             car.OnCarStateChanged += OnCarStateChanged;
             car.OnFinished += Finish;
             SetCheckpointColor(player.Color, car.CheckPoint);
@@ -106,7 +106,7 @@ public class GameManager : Singleton<GameManager>
         {
             var player = Players[i];
             player.Car.gameObject.SetActive(_currentPlayerIndex == i);
-            player.Car.CheckPoint.SetActive(_currentPlayerIndex == i);
+            // player.Car.CheckPoint.SetActive(_currentPlayerIndex == i);
         }
 
         CameraSwitcher.Instance.ActivateRaceCam();
@@ -120,6 +120,7 @@ public class GameManager : Singleton<GameManager>
         if (playersLeft <= 1)
         {
             StartCoroutine(StartAgain());
+            return;
         }
         
         _currentPlayerIndex = CalculateNextPlayerIndex();
@@ -137,6 +138,7 @@ public class GameManager : Singleton<GameManager>
 
     private int CalculateNextPlayerIndex()
     {
+        if (Players.Count == 0) return 0;
         var index = _currentPlayerIndex;
         do
         {

@@ -23,6 +23,7 @@ namespace Camera
 
             // Estimate starting distance
             _currentDistance = Vector3.Distance(_camTransform.position, Vector3.zero);
+            _camTransform.position += Vector3.forward * 20;
         }
 
         private void Update()
@@ -62,19 +63,19 @@ namespace Camera
                 _camTransform.position = proposedPosition;
             }
         }
-        
+
         public void ShowTarget(Transform target, bool keepHeight = true)
         {
             if (target == null) return;
 
-            var camPos   = _camTransform.position;
-            var forward  = _camTransform.forward;
+            var camPos = _camTransform.position;
+            var forward = _camTransform.forward;
 
             // Vector from camera to target
             var toTarget = target.position - camPos;
 
             // Remove the component along forward → leaves the sideways (lateral) error
-            var lateral  = toTarget - forward * Vector3.Dot(toTarget, forward);
+            var lateral = toTarget - forward * Vector3.Dot(toTarget, forward);
 
             if (keepHeight)
                 lateral.y = 0f; // only slide in XZ like WASD
@@ -82,6 +83,5 @@ namespace Camera
             // Slide the camera without changing rotation
             _camTransform.position += lateral;
         }
-
     }
 }
